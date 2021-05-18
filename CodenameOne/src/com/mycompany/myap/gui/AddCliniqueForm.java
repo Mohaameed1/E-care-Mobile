@@ -5,18 +5,23 @@
  */
 package com.mycompany.myap.gui;
 
+import com.codename1.capture.Capture;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ToastBar;
 import com.codename1.ui.Button;
 import com.codename1.ui.Command;
 import com.codename1.ui.Dialog;
+import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
+import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.myap.Services.ServiceClinique;
 import com.mycompany.myap.entities.Clinique;
+import java.io.IOException;
 
 /**
  *
@@ -35,9 +40,23 @@ public class AddCliniqueForm extends Form {
      
          
       
-        
+        Button btncapture= new Button("capture");
+        Label limage = new Label();
         Button B = new Button("Ajouter");
         
+        btncapture.addActionListener((e)->{
+       String path= Capture.capturePhoto(Display.getInstance().getDisplayWidth(), -1);
+       if(path != null){
+           try {
+               Image img=Image.createImage(path);
+               limage.setIcon(img);
+               revalidate();
+           } catch (IOException ex) {
+             ex.printStackTrace();
+           }
+       }
+        
+    });
         B.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -64,7 +83,7 @@ public class AddCliniqueForm extends Form {
 
            
         });
-        addAll(tfnomcl,tfadressecl,tfnumerocl,tfdesccl,B);
+        addAll(tfnomcl,tfadressecl,tfnumerocl,tfdesccl,B,btncapture,limage);
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e->previous.showBack());
     }
 
