@@ -30,7 +30,7 @@ public class ServiceReponse{
     public boolean resultOK;
     private ConnectionRequest req;
 
-    private ServiceReponse() {
+    public ServiceReponse() {
          req = new ConnectionRequest();
     }
 
@@ -42,7 +42,7 @@ public class ServiceReponse{
     }
 
     public boolean addTask(Reponse t) {
-         String url = Statics.BASE_URL + "/message/addReponseJSON/new?pseudo=" + t.getPseudo() + "&rep="+ t.getRep()+ "&question=" + t.getQuestion(); //création de l'URL
+         String url = Statics.BASE_URL + "/message/addReponseJSON/new?pseudo=" + t.getPseudo() + "&rep="+ t.getRep()+ "&question=" + t.getQuestion()+"&date_rep="+t.getDate_rep(); //création de l'URL
        //création de l'URL
         req.setUrl(url);
     req.setPost(false); // Insertion de l'URL de notre demande de connexion
@@ -107,6 +107,7 @@ public class ServiceReponse{
                 String Rep = (obj.get("rep").toString());
                 t.setRep((String)Rep);
                 t.setQuestion(obj.get("question").toString());
+                
 
            
                

@@ -8,6 +8,7 @@ package com.mycompany.gui;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
+import com.codename1.components.ToastBar;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Command;
@@ -19,6 +20,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Image;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Label;
@@ -35,6 +37,7 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Commentaire;
 import com.mycompany.services.ServiceCommentaire;
+import com.mycompany.services.mailing;
 
 
 /**
@@ -184,12 +187,23 @@ public class AjouterCommentaireForm extends BaseForm{
                 String.valueOf(sujet.getText()).toString(),
                        String.valueOf(question.getText()).toString(),
                                String.valueOf(medecin.getText()).toString());
+                
+                
+               
                                       
                     System.out.println("data livraison=="+r);
                     ServiceCommentaire.getInstance().addTask(r);
                 iDialog.dispose();
                 
                 
+                
+                //notification 
+                
+                  ToastBar.showMessage("Votre commentaire est ajouté", FontImage.MATERIAL_ACCESS_TIME);
+                  
+                  //mailing
+                  
+                mailing.sendEmail("mohamedamorri1@gmail.com","Service Contact ","Commentaire ajouté : ");
                  new ListCommentaireForm(res).show();
                 
                 

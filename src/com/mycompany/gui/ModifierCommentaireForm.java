@@ -6,8 +6,10 @@
 package com.mycompany.gui;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.ToastBar;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
@@ -122,7 +124,7 @@ TextField mail=new TextField(r.getMedecin(),"medecin",20,TextField.ANY);
          
          add(content);
          show();
-                 
+             
      
      
      

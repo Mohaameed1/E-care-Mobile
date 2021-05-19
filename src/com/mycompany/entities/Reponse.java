@@ -50,6 +50,11 @@ public class Reponse {
         this.date_rep = date_rep;
         this.question = question;
     }
+
+    public Reponse(Integer id, String rep) {
+        this.id = id;
+        this.rep = rep;
+    }
     
 
     public Reponse() {

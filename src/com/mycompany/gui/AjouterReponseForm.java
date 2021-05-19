@@ -5,9 +5,12 @@
  */
 package com.mycompany.gui;
 
+import com.codename1.capture.Capture;
 import com.codename1.components.InfiniteProgress;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.components.SpanLabel;
+import com.codename1.components.ToastBar;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.ButtonGroup;
 import com.codename1.ui.Command;
@@ -19,6 +22,7 @@ import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Image;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Label;
@@ -32,10 +36,14 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.plaf.Style;
+import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Reponse;
 import com.mycompany.services.ServiceReponse;
-import static java.lang.String.valueOf;
+import java.io.IOException;
+
+
+
 
 
 /**
@@ -158,9 +166,14 @@ public class AjouterReponseForm extends BaseForm{
         rep.setUIID("TexetFieldBlack");
         addStringValue("reponse",rep);
         
-          TextField date_rep=new TextField("","entrer la question que vous voulez la repondre");
-        date_rep.setUIID("TexetFieldBlack");
-        addStringValue("date_rep",date_rep);
+        
+        Picker datePicker = new Picker();
+datePicker.setType(Display.PICKER_TYPE_DATE);
+          
+        datePicker.setUIID("TexetFieldBlack");
+        addStringValue("date_rep",datePicker);
+        
+        
         
            TextField question=new TextField("","entrer la question que vous voulez la repondre");
         question.setUIID("TexetFieldBlack");
@@ -170,15 +183,19 @@ public class AjouterReponseForm extends BaseForm{
           
         
          
-        
+    
         
          
         Button btnAjouter=new Button("Ajouter");
         addStringValue("",btnAjouter);
         
+       
+      
+  
+        
         btnAjouter.addActionListener((e) ->{
             try{
-                if ((pseudo.getText().length()==0)||(rep.getText().length()==0 ||(date_rep.getText().length()==0 ||(question.getText().length()==0))))
+                if ((pseudo.getText().length()==0)||(rep.getText().length()==0 ||(question.getText().length()==0)))
                 {  Dialog.show("Veillez verifier les donnees","", "Annuler", "OK");
                 
             }
@@ -186,20 +203,23 @@ public class AjouterReponseForm extends BaseForm{
                     InfiniteProgress ip =new InfiniteProgress();;
                 final Dialog iDialog= ip.showInfiniteBlocking();
                 
+                SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd");
+                
                 Reponse r=new Reponse(String.valueOf(pseudo.getText())
                 .toString(),
                 String.valueOf(rep.getText()).toString(),
                
-                 String.valueOf(date_rep.getText()).toString(),
+                 format.format(datePicker.getDate()),
                 
                  String.valueOf(question.getText()).toString());
                 
                       
                                
-                                      
+                                    
                     System.out.println("data =="+r);
                     ServiceReponse.getInstance().addTask(r);
                 iDialog.dispose();
+                 ToastBar.showMessage("Votre reponse est ajoutée", FontImage.MATERIAL_ACCESS_TIME); 
                 
                 
                  new ListReponseForm(res).show();
