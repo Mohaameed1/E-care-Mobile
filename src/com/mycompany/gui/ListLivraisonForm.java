@@ -27,6 +27,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.RadioButton;
 import com.codename1.ui.Tabs;
 import com.codename1.ui.TextArea;
+import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.layouts.BorderLayout;
@@ -59,7 +60,31 @@ public class ListLivraisonForm extends BaseForm{
         
         tb.addSearchCommand(e-> {
         });
-        
+            TextField searchField;
+        searchField = new TextField("", "Commande' List"); 
+        searchField.getHintLabel().setUIID("Title");
+        searchField.setUIID("Title");
+        getToolbar().setTitleComponent(searchField);
+        searchField.addDataChangeListener((i1, i2) -> { 
+            String t = searchField.getText();
+            if(t.length() < 1) {
+                for(Component cmp : getContentPane()) {
+                    cmp.setHidden(false);
+                    cmp.setVisible(true);
+                }
+            } else {
+                t = t.toLowerCase();
+                for(Component cmp: getContentPane()) {
+               //tekhou el val ta3 el champ : champ li 3malt 3lih el recherche type span label (emplacement : container->container->spanlabel ) 
+                    String val = ((SpanLabel)((Container)((Container) cmp).getComponentAt(0)).getComponentAt(0)).getText();
+                    System.out.println( val   );
+                    boolean show = val != null && val.toLowerCase().indexOf(t) > -1;
+                    cmp.setHidden(!show);
+                    cmp.setVisible(show);
+                }
+            }
+            getContentPane().animateLayout(250);
+        });
         Tabs swipe =new Tabs();
         Label s1 =new Label();
                 Label s2 =new Label();
@@ -109,13 +134,19 @@ public class ListLivraisonForm extends BaseForm{
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton mesListes = RadioButton.createToggle("livrer", barGroup);
         mesListes.setUIID("SelectBar");
-        RadioButton liste = RadioButton.createToggle("Autres", barGroup);
+        RadioButton liste = RadioButton.createToggle("Panier List", barGroup);
         liste.setUIID("SelectBar");
         RadioButton partage = RadioButton.createToggle("Mes Livraisons", barGroup);
         partage.setUIID("SelectBar");
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
 
+liste.addActionListener(l->{
+            new ListPanierForm(res).show();
 
+
+
+
+});
         mesListes.addActionListener((e) -> {
                InfiniteProgress ip = new InfiniteProgress();
         final Dialog ipDlg = ip.showInifiniteBlocking();
@@ -188,7 +219,7 @@ if(image.getHeight()>Display.getInstance().getDisplayHeight()/2){
                        BorderLayout.south(
                        BoxLayout.encloseY(
                                new SpanLabel(text, "LargeWhiteText"),
-                               FlowLayout.encloseIn(null),
+                    
                                spacer
                        )
                        )
